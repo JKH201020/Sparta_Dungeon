@@ -6,17 +6,17 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] float moveSpeed;
+    public float moveSpeed;
     private Vector2 curMovementInput; // 현재 입력 값
-    [SerializeField] float jumpPower;
-    [SerializeField] LayerMask groundLayerMask; // 레이어 정보
+    public float jumpPower;
+    public LayerMask groundLayerMask; // 레이어 정보
 
     [Header("Look")]
-    [SerializeField] Transform cameraContainer;
-    [SerializeField] float minXLook; // 최소 시야각
-    [SerializeField] float maxXLook; // 최대 시야각
+    public Transform cameraContainer;
+    public float minXLook; // 최소 시야각
+    public float maxXLook; // 최대 시야각
     private float camCurXRot;
-    [SerializeField] float lookSensitivity; // 카메라 민감도
+    public float lookSensitivity; // 카메라 민감도
 
     private Vector2 mouseDelta; // 마우스 변화값
 
@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < rays.Length; i++)
         {
+            // 땅과의 거리가 0.1f이하일 경우
             if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
             {
                 return true;

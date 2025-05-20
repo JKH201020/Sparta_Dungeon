@@ -19,13 +19,12 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public Player player
+    public Player _player;
+    public Player Player
     {
         get { return _player; }
         set { _player = value; }
     }
-
-    private Player _player;
 
     private void Awake()
     {
@@ -36,7 +35,7 @@ public class CharacterManager : MonoBehaviour
         }
         else
         {
-            if (_instance != null)
+            if (_instance != this)
             {
                 Destroy(gameObject);
             }
