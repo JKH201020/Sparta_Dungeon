@@ -4,15 +4,42 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static CharacterManager _instance;
+    public static CharacterManager Instance // 싱글톤 생성
     {
-        
+        get
+        {
+            if (_instance == null)
+            {
+                // 인스턴스가 없으면 CharacterManager 스크립트가 있는 CharacterManager오브젝트 생성
+                _instance = new GameObject("CharacterManager").AddComponent<CharacterManager>();
+            }
+
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public Player player
     {
-        
+        get { return _player; }
+        set { _player = value; }
+    }
+
+    private Player _player;
+
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            if (_instance != null)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }

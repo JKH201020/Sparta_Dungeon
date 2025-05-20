@@ -1,5 +1,5 @@
 {
-    "name": "InputAction",
+    "name": "PlayerControls",
     "maps": [
         {
             "name": "Player",
@@ -25,12 +25,12 @@
                 },
                 {
                     "name": "Look",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "f91ed06c-cbce-4fa8-96c5-147eaaa8eeaa",
-                    "expectedControlType": "",
+                    "expectedControlType": "Delta",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
