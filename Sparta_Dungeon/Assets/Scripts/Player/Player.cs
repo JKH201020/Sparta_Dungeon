@@ -13,6 +13,8 @@ public class Player : MonoBehaviour // Player와 관련된 기능을 모아두는 곳
     // addItem이라는 델리게이트에 뭔가 구독이 되어있으면 실행시켜 주게끔 세팅
     public Action addItem;
 
+    public Transform dropPosition; // 아이템 드랍(버릴) 위치
+
     private void Awake()
     {
         // 싱글톤매니저에 Player를 참조할 수 있게 데이터를 넘긴다.
