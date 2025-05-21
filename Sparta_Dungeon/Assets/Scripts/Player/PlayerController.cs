@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     private Vector2 curMovementInput; // 현재 입력 값
-    public float jumpPower;
     public LayerMask groundLayerMask; // 레이어 정보
 
     [Header("Look")]
@@ -72,7 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started && IsGrounded())
         {
-            rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+            rigidbody.AddForce(Vector2.up * condition.GetCurrentJumpPower(), ForceMode.Impulse);
         }
     }
 
@@ -84,16 +83,15 @@ public class PlayerController : MonoBehaviour
             {
                 for (int i = 0; i < uiInven.selectedItem.consumables.Length; i++)
                 {
-                    //switch (uiInventory.selectedItem.consumables[i].type)
-                    //{
-                    //    case ConsumableType.Stat:
-
-                    //        break;
-                    //    case ConsumableType.Health:
-                    //        condition.Heal(uiInventory.selectedItem.consumables[i].value);
-                    //        break;
-
-                    //}
+                    switch (uiInven.selectedItem.consumables[i].type)
+                    {
+                        case ConsumableType.Jump:
+                            condition.JumpUp(uiInven.selectedItem.consumables[i].value);
+                            break;
+                        //case ConsumableType.Health:
+                        //    condition.Heal(uiInven.selectedItem.consumables[i].value);
+                        //    break;
+                    }
                 }
 
                 uiInven.RemoveSelectedItem();

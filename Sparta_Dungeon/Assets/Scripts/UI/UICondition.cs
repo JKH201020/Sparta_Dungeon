@@ -6,6 +6,7 @@ public class UICondition : MonoBehaviour
 {
     // 값들을 계속 업데이트 시킬 거임
     public Condition health;
+    public Condition jump;
 
     // Start is called before the first frame update
     void Start()

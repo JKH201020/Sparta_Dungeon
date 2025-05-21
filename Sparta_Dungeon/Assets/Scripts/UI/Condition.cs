@@ -6,16 +6,17 @@ using UnityEngine.UI;
 
 public class Condition : MonoBehaviour
 {
-    public float curValue; // 현재 체력
-    public float maxValue; // 최대 체력
-    public float startValue; // 시작 체력
-    public float passiveValue; // 체젠
+    public float curValue; // 현재치
+    public float maxValue; // 최대치
+    public float startValue; // 시작치
+
+    //public float passiveValue; 
     public Image uiBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        // 시작할 때 현재 체력을 시작 체력으로 지정
+        // 시작할 때 현재 체력을 시작 체력으로 지정 - 체력 기준
         curValue = startValue;
     }
 
@@ -26,13 +27,13 @@ public class Condition : MonoBehaviour
         uiBar.fillAmount = GetPercentage();
     }
 
-    public void Add(float amount)
+    public void Add(float amount) // 아이템 효과로 증가
     {
         // curValue + amount 와 maxValue 중 더 작은 값을 현재 값으로 설정
         curValue = Mathf.Min(curValue + amount, maxValue);
     }
 
-    public void Subtract(float amount) // 체력 감소
+    public void Subtract(float amount) // 아이템 효과로 감소
     {
         // curValue - amount 와 0 중 더 큰 값을 현재 값으로 설정
         curValue = Mathf.Max(curValue - amount, 0.0f);

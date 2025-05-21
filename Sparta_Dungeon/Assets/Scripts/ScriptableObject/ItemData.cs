@@ -13,7 +13,7 @@ public enum ItemType // 아이템 타입
 public enum ConsumableType // 소모품 타입
 {
     Health, //체력 회복
-    Stat // 스텟 관련
+    Jump // 점프
 }
 
 [Serializable]
