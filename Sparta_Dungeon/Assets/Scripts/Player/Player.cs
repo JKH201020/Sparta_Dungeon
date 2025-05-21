@@ -7,6 +7,7 @@ public class Player : MonoBehaviour // Player와 관련된 기능을 모아두는 곳
 {
     public PlayerController controller;
     public PlayerCondition condition;
+    public Equipment equip;
     
     // 현재 상호작용하는 아이템의 데이터를 넘겨주고
     public ItemData itemData; // 이 스크립트에 아이템 데이터 넘겨줌
@@ -21,5 +22,6 @@ public class Player : MonoBehaviour // Player와 관련된 기능을 모아두는 곳
         CharacterManager.Instance.Player = this;
         controller = GetComponent<PlayerController>();
         condition = GetComponent<PlayerCondition>();
+        equip = GetComponent<Equipment>();
     }
 }

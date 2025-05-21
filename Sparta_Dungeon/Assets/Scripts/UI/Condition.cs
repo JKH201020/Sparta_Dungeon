@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,15 +26,15 @@ public class Condition : MonoBehaviour
         uiBar.fillAmount = GetPercentage();
     }
 
-    //public void Add(float amount)
-    //{
-    //    // curValue + amount 와 maxValue 중 더 작은 값을 현재 체력으로 설정
-    //    curValue = Mathf.Min(curValue + amount, maxValue);
-    //}
+    public void Add(float amount)
+    {
+        // curValue + amount 와 maxValue 중 더 작은 값을 현재 값으로 설정
+        curValue = Mathf.Min(curValue + amount, maxValue);
+    }
 
     public void Subtract(float amount) // 체력 감소
     {
-        // curValue - amount 와 0 중 더 큰 값을 현재 체력으로 설정
+        // curValue - amount 와 0 중 더 큰 값을 현재 값으로 설정
         curValue = Mathf.Max(curValue - amount, 0.0f);
     }
 

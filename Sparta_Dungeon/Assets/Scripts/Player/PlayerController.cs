@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour
     public bool canLook = true;
 
     private Rigidbody rigidbody;
+    public UIInventory uiInven;
+    public PlayerCondition condition;
 
     private void Awake()
     {
@@ -53,7 +57,7 @@ public class PlayerController : MonoBehaviour
         mouseDelta = context.ReadValue<Vector2>();
     }
 
-    public void OnMove(InputAction.CallbackContext context) // 이동버튼 누를 때
+    public void OnMove(InputAction.CallbackContext context) // 이동버튼 누를 때(wasd)
     {
         // wasd 눌렀을 때
         if (context.phase == InputActionPhase.Performed)
@@ -66,11 +70,47 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnJump(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context) // 점프(스페이스)
     {
         if (context.phase == InputActionPhase.Started && IsGrounded())
         {
             rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+        }
+    }
+
+    public void OnUse(InputAction.CallbackContext context) // 아이템 사용(마우스 좌클릭)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (uiInven != null && uiInven.selectedItem != null)
+            {
+                for (int i = 0; i < uiInven.selectedItem.consumables.Length; i++)
+                {
+                    //switch (uiInventory.selectedItem.consumables[i].type)
+                    //{
+                    //    case ConsumableType.Stat:
+
+                    //        break;
+                    //    case ConsumableType.Health:
+                    //        condition.Heal(uiInventory.selectedItem.consumables[i].value);
+                    //        break;
+
+                    //}
+                }
+
+                uiInven.RemoveSelectedItem();
+            }            
+        }
+    }
+
+    public void OnSwitchSlot(InputAction.CallbackContext context) // 인벤토리 슬롯 스위치(탭)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            // (uiInventory.selectedItemIndex + 1)가 uiInventory.slots.Length와 같아질 때 다시 0으로 초기화 시킴
+            uiInven.selectedItemIndex = (uiInven.selectedItemIndex + 1) % uiInven.slots.Length;
+
+
         }
     }
 

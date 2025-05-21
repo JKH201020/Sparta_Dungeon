@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
 {
@@ -14,34 +15,72 @@ public class UIInventory : MonoBehaviour
     private PlayerController controller;
     private PlayerCondition condition;
 
-    ItemData selectedItem;
-    int selectedItemIndex = 0;
+    public ItemData selectedItem;
+    public int selectedItemIndex = 0;
+
+    int curEquipIndex; // 현재 장착된 아이템의 슬롯 인덱스 (Equip 로직에서 사용)
+
+    private void Awake()
+    {
+        if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null)
+        {
+            controller = CharacterManager.Instance.Player.controller;
+            condition = CharacterManager.Instance.Player.condition;
+            dropPosition = CharacterManager.Instance.Player.dropPosition;
+
+            // CharacterManager의 AddItem 이벤트 구독
+            CharacterManager.Instance.Player.addItem += AddItem;
+        }
+
+        if (slots != null)
+        {
+            // 아이템 슬롯 칸을 slotPanel 오브젝트의 자식의 개수를 불러옴
+            slots = new ItemSlot[slotPanel.childCount];
+
+            for (int i = 0; i < slots.Length; i++)
+            {
+                Transform child = slotPanel.GetChild(i);
+                if(child != null)
+                {
+                    // 슬롯판넬의 자식오브젝트 아이템 슬롯 컴포넌트를 가져와 저장
+                    slots[i] = slotPanel.GetChild(i).GetComponent<ItemSlot>();
+
+                    if (slots[i] != null)
+                    {
+                        slots[i].index = i;
+                        slots[i].inventory = this;
+
+                        // 모든 슬롯의 아웃라인을 기본적으로 비활성화
+                        if (slots[i].TryGetComponent<Outline>(out Outline slotOutline))
+                        {
+                            slotOutline.enabled = false;
+                        }
+                    }
+                    else
+                    {
+                        slots[i] = null; // null이 들어가지 않도록 명시적으로 null 할당
+                    }
+                }
+            }
+        }
+        else
+        {
+            slots = new ItemSlot[0]; // NullReferenceException 방지를 위해 빈 배열로 초기화
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        controller = CharacterManager.Instance.Player.controller;
-        condition = CharacterManager.Instance.Player.condition;
-        dropPosition = CharacterManager.Instance.Player.dropPosition;
-
-        CharacterManager.Instance.Player.addItem += AddItem;
-
-        // 아이템 슬롯 칸을 slotPanel 오브젝트의 자식의 개수를 불러옴
-        slots = new ItemSlot[slotPanel.childCount];
-
-        for (int i = 0; i < slots.Length; i++)
+        if (slots.Length > 0)
         {
-            // 슬롯판넬의 자식오브젝트 아이템 슬롯 컴포넌트를 가져와 저장
-            slots[i] = slotPanel.GetChild(i).GetComponent<ItemSlot>();
-            slots[i].index = i;
-            slots[i].inventory = this;
+            SelectItem(0);
+
+            if (slots[0] != null && slots[0].TryGetComponent<Outline>(out Outline firstSlotOutline))
+            {
+                firstSlotOutline.enabled = true;
+            }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     void AddItem()
@@ -113,7 +152,7 @@ public class UIInventory : MonoBehaviour
         return null;
     }
 
-    ItemSlot GetEmptySlot() // 아이템 슬롯이 이어 있을 경우
+    ItemSlot GetEmptySlot() // 아이템 슬롯이 비어 있을 경우
     {
         for (int i = 0; i < slots.Length; i++)
         {
@@ -126,14 +165,55 @@ public class UIInventory : MonoBehaviour
         return null;
     }
 
-    void ThrowItem(ItemData data)
+    void ThrowItem(ItemData data) // 일단 코드만 작성
     {
-        // 내 주위에 랜덤으로 떨어짐
+        // 버린 아이템이 내 주위에 랜덤으로 떨어짐
         Instantiate(data.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
     }
 
-    void SelectItem(int index)
+    public void SelectItem(int index)
     {
         if (slots[index].item == null) return;
+
+        selectedItem = slots[index].item;
+        selectedItemIndex = index;
+    }
+
+    public void RemoveSelectedItem()
+    {
+        slots[selectedItemIndex].quantity--; // 아이템 수량 감소
+
+        if (slots[selectedItemIndex].quantity <= 0)
+        {
+            selectedItem = null;
+            slots[selectedItemIndex].item = null;
+            selectedItemIndex = -1;
+        }
+
+        UpdateUI();
+    }
+
+    public void OnEquip()
+    {
+        if (selectedItem == null || selectedItem.equipPrefab == null)
+        {
+            // 현재 장착된 아이템이 있다면 해제
+            if(CharacterManager.Instance != null && CharacterManager.Instance.Player != null)
+            {
+                CharacterManager.Instance.Player.equip.UnEquip();
+            }
+
+            return;
+        }
+
+        slots[selectedItemIndex].equipped = true;
+        curEquipIndex = selectedItemIndex;
+
+        if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null && CharacterManager.Instance.Player.equip != null)
+        {
+            CharacterManager.Instance.Player.equip.EquipNew(selectedItem);
+        }
+
+        UpdateUI();
     }
 }
