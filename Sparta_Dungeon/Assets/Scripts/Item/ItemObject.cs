@@ -25,8 +25,7 @@ public class ItemObject : MonoBehaviour, IInteractable
         CharacterManager.Instance.Player.itemData = data;
         // addItem에 필요한 기능을 구독시켜 놓음
         CharacterManager.Instance.Player.addItem?.Invoke();
-        uiInven.SelectItem(uiInven.selectedItemIndex);
-        uiInven.OnEquip();
+
 
         Destroy(gameObject);
     }

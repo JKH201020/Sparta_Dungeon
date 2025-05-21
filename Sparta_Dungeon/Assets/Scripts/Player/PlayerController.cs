@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -99,18 +97,19 @@ public class PlayerController : MonoBehaviour
                 }
 
                 uiInven.RemoveSelectedItem();
-            }            
+            }
         }
     }
 
-    public void OnSwitchSlot(InputAction.CallbackContext context) // 인벤토리 슬롯 스위치(탭)
+    public void OnSelectItem(InputAction.CallbackContext context) // 인벤토리 슬롯 스위치(탭)
     {
         if (context.phase == InputActionPhase.Started)
         {
-            // (uiInventory.selectedItemIndex + 1)가 uiInventory.slots.Length와 같아질 때 다시 0으로 초기화 시킴
-            uiInven.selectedItemIndex = (uiInven.selectedItemIndex + 1) % uiInven.slots.Length;
+            // (uiInventory.selectedItemIndex + 1)이 uiInventory.slots.Length와 같아질 때 다시 0으로 초기화 시킴
+            int Index = (uiInven.selectedIndex + 1) % uiInven.slots.Length;
 
-
+            uiInven.SelectedSlot(Index);
+            Debug.Log("현재 선택된 슬롯 인덱스: " + uiInven.selectedIndex);
         }
     }
 

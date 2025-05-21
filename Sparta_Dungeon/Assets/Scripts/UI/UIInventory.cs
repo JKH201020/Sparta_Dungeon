@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +14,9 @@ public class UIInventory : MonoBehaviour
     private PlayerCondition condition;
 
     public ItemData selectedItem;
-    public int selectedItemIndex = 0;
+    public int selectedIndex = 0; // 현재 선택된 슬롯의 인덱스 (아웃라인 표시용)
 
-    int curEquipIndex; // 현재 장착된 아이템의 슬롯 인덱스 (Equip 로직에서 사용)
+    //int curEquipIndex; // 현재 장착된 아이템의 슬롯 인덱스 (Equip 로직에서 사용)
 
     private void Awake()
     {
@@ -40,10 +38,10 @@ public class UIInventory : MonoBehaviour
             for (int i = 0; i < slots.Length; i++)
             {
                 Transform child = slotPanel.GetChild(i);
-                if(child != null)
+                if (child != null)
                 {
                     // 슬롯판넬의 자식오브젝트 아이템 슬롯 컴포넌트를 가져와 저장
-                    slots[i] = slotPanel.GetChild(i).GetComponent<ItemSlot>();
+                    slots[i] = child.GetComponent<ItemSlot>();
 
                     if (slots[i] != null)
                     {
@@ -51,13 +49,11 @@ public class UIInventory : MonoBehaviour
                         slots[i].inventory = this;
 
                         // 모든 슬롯의 아웃라인을 기본적으로 비활성화
-                        if (slots[i].TryGetComponent<Outline>(out Outline slotOutline))
-                        {
-                            slotOutline.enabled = false;
-                        }
+                        slots[i].SetOutlineActive(false);
                     }
                     else
                     {
+                        Debug.LogWarning($"Slot {i} under {slotPanel.name} does not have an ItemSlot component.");
                         slots[i] = null; // null이 들어가지 않도록 명시적으로 null 할당
                     }
                 }
@@ -65,6 +61,7 @@ public class UIInventory : MonoBehaviour
         }
         else
         {
+            Debug.LogError("slotPanel is not assigned in UIInventory. Please assign it in the Inspector.");
             slots = new ItemSlot[0]; // NullReferenceException 방지를 위해 빈 배열로 초기화
         }
     }
@@ -74,12 +71,8 @@ public class UIInventory : MonoBehaviour
     {
         if (slots.Length > 0)
         {
-            SelectItem(0);
-
-            if (slots[0] != null && slots[0].TryGetComponent<Outline>(out Outline firstSlotOutline))
-            {
-                firstSlotOutline.enabled = true;
-            }
+            // 게임 시작 시 0번 슬롯 (첫 번째 슬롯) 선택 및 아웃라인 활성화
+            SelectedSlot(0);
         }
     }
 
@@ -171,23 +164,41 @@ public class UIInventory : MonoBehaviour
         Instantiate(data.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
     }
 
-    public void SelectItem(int index)
+    public void SelectedSlot(int index)
     {
-        if (slots[index].item == null) return;
+        //if (slots[index].item == null) return;
 
-        selectedItem = slots[index].item;
-        selectedItemIndex = index;
+        //selectedItem = slots[index].item;
+        //selectedIndex = index;
+
+        // 이전에 슬롯의 아웃라인을 비활성화
+        if (selectedIndex >= 0 && selectedIndex < slots.Length && slots[selectedIndex] != null)
+        {
+            slots[selectedIndex].SetOutlineActive(false);
+        }
+
+        selectedIndex = index;
+
+        if (selectedIndex >= 0 && selectedIndex < slots.Length && slots[selectedIndex] != null)
+        {
+            slots[selectedIndex].SetOutlineActive(true);
+            selectedItem = slots[selectedIndex].item; // 선택된 아이템 정보도 업데이트
+        }
+        else
+        {
+            selectedItem = null; // 유효하지 않은 인덱스인 경우 선택된 아이템 초기화
+        }
     }
 
-    public void RemoveSelectedItem()
+    public void RemoveSelectedItem() // 아이템 버리거나 사용했을 때
     {
-        slots[selectedItemIndex].quantity--; // 아이템 수량 감소
+        slots[selectedIndex].quantity--; // 아이템 수량 감소
 
-        if (slots[selectedItemIndex].quantity <= 0)
+        if (slots[selectedIndex].quantity <= 0)
         {
             selectedItem = null;
-            slots[selectedItemIndex].item = null;
-            selectedItemIndex = -1;
+            slots[selectedIndex].item = null;
+            //selectedIndex = -1;
         }
 
         UpdateUI();
@@ -198,7 +209,7 @@ public class UIInventory : MonoBehaviour
         if (selectedItem == null || selectedItem.equipPrefab == null)
         {
             // 현재 장착된 아이템이 있다면 해제
-            if(CharacterManager.Instance != null && CharacterManager.Instance.Player != null)
+            if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null)
             {
                 CharacterManager.Instance.Player.equip.UnEquip();
             }
@@ -206,8 +217,8 @@ public class UIInventory : MonoBehaviour
             return;
         }
 
-        slots[selectedItemIndex].equipped = true;
-        curEquipIndex = selectedItemIndex;
+        //slots[selectedIndex].equipped = true;
+        //curEquipIndex = selectedIndex;
 
         if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null && CharacterManager.Instance.Player.equip != null)
         {
