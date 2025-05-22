@@ -197,27 +197,24 @@ public class UIInventory : MonoBehaviour
         UpdateUI();
     }
 
-    public void OnEquip()
-    {
-        if (selectedItem == null || selectedItem.equipPrefab == null)
-        {
-            // 현재 장착된 아이템이 있다면 해제
-            if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null)
-            {
-                CharacterManager.Instance.Player.equip.UnEquip();
-            }
+    //public void OnEquip()
+    //{
+    //    if (selectedItem == null || selectedItem.equipPrefab == null)
+    //    {
+    //        // 현재 장착된 아이템이 있다면 해제
+    //        if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null)
+    //        {
+    //            CharacterManager.Instance.Player.equip.UnEquip();
+    //        }
 
-            return;
-        }
+    //        return;
+    //    }
 
-        //slots[selectedIndex].equipped = true;
-        //curEquipIndex = selectedIndex;
+    //    if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null && CharacterManager.Instance.Player.equip != null)
+    //    {
+    //        CharacterManager.Instance.Player.equip.EquipNew(selectedItem);
+    //    }
 
-        if (CharacterManager.Instance != null && CharacterManager.Instance.Player != null && CharacterManager.Instance.Player.equip != null)
-        {
-            CharacterManager.Instance.Player.equip.EquipNew(selectedItem);
-        }
-
-        UpdateUI();
-    }
+    //    UpdateUI();
+    //}
 }

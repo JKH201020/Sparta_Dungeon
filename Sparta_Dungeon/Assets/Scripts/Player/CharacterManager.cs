@@ -19,7 +19,7 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public Player _player;
+    public Player _player; // 플레이어 컴포넌트 참조 저장
     public Player Player
     {
         get { return _player; }
@@ -31,13 +31,13 @@ public class CharacterManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음
         }
         else
         {
             if (_instance != this)
             {
-                Destroy(gameObject);
+                Destroy(gameObject); // 중복 인스턴스 파괴
             }
         }
     }
