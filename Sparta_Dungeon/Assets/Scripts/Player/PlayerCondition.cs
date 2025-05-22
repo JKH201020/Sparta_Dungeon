@@ -12,26 +12,55 @@ public class PlayerCondition : MonoBehaviour
     Condition health { get { return uiCondition.health; } } // 이 데이터를 통해 업데이트
 
     [Header("Jump Power")]
-    public float Timer = 60f; // 지속 시간
+    public float Timer = 30f; // 지속 시간
     public float jumpPower; // 기본 점프 파워
     public float currentJP; // 현재 점프 파워
+
+    private float lastYPosition; // 마지막에 밟은 Y축 좌표
+    private bool onRoad = false;
     private Coroutine jumpPowerCoroutine;
 
     private void Awake()
     {
+        lastYPosition = transform.position.y;
         currentJP = jumpPower;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (health.curValue >0f) 
+
+    }
+
+    public void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
         {
-            health.curValue -= Time.deltaTime * 2;
+            if(onRoad) // 딸어지는 중
+            {
+                // 떨어진 높이
+                float fallDistance = lastYPosition - transform.position.y;
+
+                if (fallDistance >= 2) // 땅과 2 이상의 높이 차이가 날 때
+                {
+                    health.curValue -= Mathf.Abs(fallDistance) * 5; // 떨어지면 체력 감소
+                    Debug.Log($"플레이어가 {fallDistance:F2} 높이에서 떨어졌습니다!");
+                }
+            }
+
+            onRoad = false;
         }
-        if (health.curValue < 0f) // 체력이 0 아래면
+
+        lastYPosition = transform.position.y;
+    }
+
+    public void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Road"))
         {
-            //Die();
+            // 발판 위의 위치 저장
+            lastYPosition = transform.position.y;
+            onRoad = true;
         }
     }
 

@@ -57,9 +57,6 @@ public class RoadObject : MonoBehaviour
             randomY = 0.5f;
         }
 
-        // 새로운 발판의 Y 좌표 계산: 현재 발판의 상단 + 다음 발판 Y축 위치
-        //float positionY = bounds.max.y + spawnYRange;
-
         // 최종 스폰 위치
         Vector3 spawnPosition = new Vector3(randomX, randomY, randomZ);
         // 새로운 발판을 생성

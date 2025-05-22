@@ -33,7 +33,7 @@ public class Condition : MonoBehaviour
         curValue = Mathf.Min(curValue + amount, maxValue);
     }
 
-    public void Subtract(float amount) // 아이템 효과로 감소
+    public void Subtract(float amount) // 
     {
         // curValue - amount 와 0 중 더 큰 값을 현재 값으로 설정
         curValue = Mathf.Max(curValue - amount, 0.0f);
