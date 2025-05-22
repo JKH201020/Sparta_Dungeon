@@ -5,28 +5,25 @@ using UnityEngine;
 
 public class JumpObject : MonoBehaviour
 {
-    float power = 3f;
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("점프대 진입");
-    //    AddForce(other);
-    //}
+    public float power = 3f; // 기본 3
+    Color newColor = Color.black; // 점프대 색상
 
-    private void OnTriggerStay(Collider other)
+    private void Start()
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("점프대 진입");
-            AddForce(other);
-        }
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+
+        meshRenderer.material.color = newColor; // 색상 변경
     }
 
-    void AddForce(Collider other) // 점프대 점프력
+    private void OnCollisionEnter(Collision other) // 점프대와 충돌 시 점프됨
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Rigidbody _playerRigidbody = other.GetComponent<Rigidbody>();
+            // _playerRigidbody에 플레이어의 rigidbody 컴포넌트를 가져와 저장
+            // 플레이어의 rigidbody의 정보에 따라 _playerRigidbody에 반영
+            Rigidbody _playerRigidbody = other.gameObject.GetComponent<Rigidbody>();
 
+            // ForceMode.Impulse: Impulse는 함수가 호출되는 바로 그 순간 한 번만 힘을 적용
             _playerRigidbody.AddForce(transform.up * power, ForceMode.Impulse);
         }
     }
