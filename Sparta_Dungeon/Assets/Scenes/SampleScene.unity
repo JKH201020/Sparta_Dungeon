@@ -1855,7 +1855,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 302f9270c40ea514c921b423eea7347c, type: 3}
---- !u!1001 &1306153193
+--- !u!1001 &1210483228
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1865,19 +1865,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 707165724929950509, guid: 2f640419bf2f2914abe8ee4778d709ad, type: 3}
       propertyPath: m_Name
-      value: GameObject
+      value: Item_Mushroom
       objectReference: {fileID: 0}
+    - target: {fileID: 6241960445615330319, guid: 2f640419bf2f2914abe8ee4778d709ad, type: 3}
+      propertyPath: uiInven
+      value: 
+      objectReference: {fileID: 1717631402}
     - target: {fileID: 6356813045940748123, guid: 2f640419bf2f2914abe8ee4778d709ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.259998
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 6356813045940748123, guid: 2f640419bf2f2914abe8ee4778d709ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.89
+      value: 0.984
       objectReference: {fileID: 0}
     - target: {fileID: 6356813045940748123, guid: 2f640419bf2f2914abe8ee4778d709ad, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.75
+      value: -16.28
       objectReference: {fileID: 0}
     - target: {fileID: 6356813045940748123, guid: 2f640419bf2f2914abe8ee4778d709ad, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2872,5 +2876,5 @@ SceneRoots:
   - {fileID: 326270294}
   - {fileID: 2025423622}
   - {fileID: 866257038}
-  - {fileID: 1306153193}
+  - {fileID: 1210483228}
   - {fileID: 109699419}

@@ -25,16 +25,20 @@ public class PlayerCondition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health.curValue >0f) 
+        {
+            health.curValue -= Time.deltaTime * 2;
+        }
         if (health.curValue < 0f) // 체력이 0 아래면
         {
             //Die();
         }
     }
 
-    //public void Heal(float amount) // 아이템으로 회복
-    //{
-    //    health.Add(amount);
-    //}
+    public void Heal(float amount) // 아이템으로 회복
+    {
+        health.Add(amount);
+    }
 
     public void Die()
     {

@@ -86,11 +86,13 @@ public class PlayerController : MonoBehaviour
                     switch (uiInven.selectedItem.consumables[i].type) // 소모 아이템 타입에 따른 조건문
                     {
                         case ConsumableType.Jump:
+                            // 점프력 증가
                             condition.JumpUp(uiInven.selectedItem.consumables[i].value);
                             break;
-                        //case ConsumableType.Health:
-                        //    condition.Heal(uiInven.selectedItem.consumables[i].value);
-                        //    break;
+                        case ConsumableType.Health:
+                            // 체력 회복
+                            condition.Heal(uiInven.selectedItem.consumables[i].value);
+                            break;
                     }
                 }
 
