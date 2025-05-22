@@ -53,7 +53,6 @@ public class UIInventory : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning($"Slot {i} under {slotPanel.name} does not have an ItemSlot component.");
                         slots[i] = null; // null이 들어가지 않도록 명시적으로 null 할당
                     }
                 }
@@ -61,7 +60,6 @@ public class UIInventory : MonoBehaviour
         }
         else
         {
-            Debug.LogError("slotPanel is not assigned in UIInventory. Please assign it in the Inspector.");
             slots = new ItemSlot[0]; // NullReferenceException 방지를 위해 빈 배열로 초기화
         }
     }
@@ -166,11 +164,6 @@ public class UIInventory : MonoBehaviour
 
     public void SelectedSlot(int index)
     {
-        //if (slots[index].item == null) return;
-
-        //selectedItem = slots[index].item;
-        //selectedIndex = index;
-
         // 이전에 슬롯의 아웃라인을 비활성화
         if (selectedIndex >= 0 && selectedIndex < slots.Length && slots[selectedIndex] != null)
         {

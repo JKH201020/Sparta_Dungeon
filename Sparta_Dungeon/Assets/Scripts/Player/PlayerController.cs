@@ -79,11 +79,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            if (uiInven != null && uiInven.selectedItem != null)
+            if (uiInven != null && uiInven.selectedItem != null) // 인벤토리와 선택한 아이템이 존재할 때
             {
                 for (int i = 0; i < uiInven.selectedItem.consumables.Length; i++)
                 {
-                    switch (uiInven.selectedItem.consumables[i].type)
+                    switch (uiInven.selectedItem.consumables[i].type) // 소모 아이템 타입에 따른 조건문
                     {
                         case ConsumableType.Jump:
                             condition.JumpUp(uiInven.selectedItem.consumables[i].value);
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                uiInven.RemoveSelectedItem();
+                uiInven.RemoveSelectedItem(); // 사용 시 아이템 제거
             }
         }
     }
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            // (uiInventory.selectedItemIndex + 1)이 uiInventory.slots.Length와 같아질 때 다시 0으로 초기화 시킴
+            // (uiInventory.selectedItemIndex + 1)이 uiInven.slots.Length와 같아질 때 다시 0으로 초기화 시킴
             int Index = (uiInven.selectedIndex + 1) % uiInven.slots.Length;
 
             uiInven.SelectedSlot(Index);

@@ -16,16 +16,11 @@ public class ItemSlot : MonoBehaviour
     public UIInventory inventory;
 
     public int index; // 아이템 배열 인덱스
-    //public bool equipped; // 장착중인가?
     public int quantity; // 정보를 넣어줌
 
     private void Awake()
     {
         outline = GetComponent<Outline>();
-        if (outline == null)
-        {
-            Debug.LogWarning($"ItemSlot on {gameObject.name} does not have an Outline component. Please add one.");
-        }
     }
 
     private void OnEnable()
@@ -60,7 +55,6 @@ public class ItemSlot : MonoBehaviour
         {
             outline.enabled = false;
         }
-
     }
 
     public void SetOutlineActive(bool isActive) // 활성화를 선택하는 메서드
