@@ -56,7 +56,42 @@
   * **프로그래밍 언어:** C\#
 
 -----
+아하, 제가 사용자님의 의도를 제대로 파악하지 못했네요! 죄송합니다.
 
+말씀하신 **코드 주소(파일 경로)**를 README에 포함하여 각 스크립트가 어디에 위치하는지 명확하게 보여드리겠습니다.
 
+---
 
------
+## 📂 프로젝트 구조 및 핵심 스크립트
+
+본 프로젝트는 다음과 같은 주요 스크립트들로 구성되어 있으며, 각 스크립트는 프로젝트 내 특정 경로에 위치합니다.
+
+---
+
+### Item (아이템 관련)
+* **`ItemSlot.cs`**: 인벤토리 UI의 **개별 아이템 슬롯** 기능을 정의하고 관리합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Item/ItemSlot.cs`
+* **`ItemObject.cs`**: 게임 월드에 배치된 **아이템 오브젝트**의 상호작용(예: 이름/설명 표시)을 처리합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Item/ItemObject.cs`
+* **`ItemData.cs`**: **모든 아이템의 공통 속성** (이름, 설명, 타입, 아이콘 등)을 정의하는 ScriptableObject입니다. 에디터에서 새로운 아이템 데이터를 쉽게 생성할 수 있습니다.
+    * `Sparta_Dungeon/Assets/Scripts/ScriptableObject/ItemData.cs`
+
+### Player (플레이어 관련)
+* **`Interaction.cs`**: 플레이어가 월드 오브젝트(예: 아이템)를 **바라볼 때의 상호작용**을 감지합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Player/Interaction.cs`
+* **`Player.cs`**: **플레이어의 모든 핵심 기능** (움직임, 상태, 아이템 관리)을 통합하고, 이 플레이어 정보를 `CharacterManager`에 등록합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Player/Player.cs`
+* **`PlayerCondition.cs`**: 플레이어의 **체력, 점프같은 상태 변화**를 관리하고 게임에 반영합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Player/PlayerCondition.cs`
+* **`PlayerController.cs`**: **플레이어의 이동, 점프 등 조작**과 관련된 로직을 처리합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Player/PlayerController.cs`
+
+### Object (게임 오브젝트 관련)
+* **`JumpObject.cs`**: 특정 발판이 **점프대** 역할을 하도록 기능을 구현합니다.
+    * `Sparta_Dungeon/Assets/Scripts/Object/JumpObject.cs`
+
+### Manager (관리자)
+* **`CharacterManager.cs`**: **플레이어 데이터를 중앙에서 관리**하고 게임 내 어디서든 쉽게 접근할 수 있도록 돕는 **싱글톤 매니저**입니다.
+    * `Sparta_Dungeon/Assets/Scripts/Player/CharacterManager.cs`
+
+---
