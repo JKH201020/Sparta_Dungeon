@@ -58,7 +58,7 @@ public class UIInventory : MonoBehaviour
                     if (slots[i] != null)
                     {
                         slots[i].index = i;
-                        slots[i].inventory = this;
+                        slots[i].inventory = this; 
                         slots[i].SetOutlineActive(false); // 모든 슬롯의 아웃라인을 기본적으로 비활성화
                     }
                     else
@@ -114,8 +114,7 @@ public class UIInventory : MonoBehaviour
             return;
         }
 
-        //없다면 아이템 버림
-        ThrowItem(data);
+        ThrowItem(data);  //없다면 아이템 버림
         CharacterManager.Instance.Player.itemData = null;
         Debug.Log($"인벤토리가 가득 차서 '{data.displayName}'을(를) 버림");
     }
@@ -124,15 +123,13 @@ public class UIInventory : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].item != null)
-            {
-                // 해당 슬롯에 템 있을 때
+            if (slots[i].item != null) // 해당 슬롯에 템 있을 때
+            {  
                 slots[i].Set(); // 아이템 세팅
             }
             else
-            {
-                // 해당 슬롯 비움
-                slots[i].Clear();
+            {  
+                slots[i].Clear(); // 해당 슬롯 비움
             }
         }
     }

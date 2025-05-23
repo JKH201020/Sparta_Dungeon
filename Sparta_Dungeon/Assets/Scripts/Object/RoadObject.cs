@@ -12,35 +12,32 @@ public class RoadObject : MonoBehaviour
 
     private bool isRoadSpawn = false; // 발판 생성 - 무한 생성 방지
 
-    //static 키워드는 해당 변수가 클래스 자체에 속하며,
-    //그 클래스의 모든 인스턴스(객체)가 공유하는 하나의 값이라는 것을 의미
+    //static 키워드는 해당 변수가 클래스 자체에 속하며, 그 클래스의 모든 인스턴스(객체)가 공유하는 하나의 값이라는 것을 의미
     //RoadObject 스크립트가 여러 발판에 붙어 있을 때,
     //static 변수를 사용하지 않았다면 각 발판은 자신만의 lastSpawnedRoad 변수를 가짐
-    private static GameObject lastSpawnedRoad;
-    private static GameObject initRoadReference;
+    private static GameObject lastSpawnedRoad; // 마지막에 소환된 발판
+    private static GameObject initRoadReference; // 시작 발판
 
-    GameManager gameManager;
     // 이 static 변수를 초기화하는 static 메서드를 추가
-    public static void ResetStatic()
+    public static void ResetStatic() // 재시작 초기화
     {
-        lastSpawnedRoad = null;
+        lastSpawnedRoad = null; 
         initRoadReference = null;
     }
 
-    public static void SetInitRoadReference(GameObject initRoad)
+    public static void SetInitRoadReference(GameObject initRoad) // 매개 변수로 첫 발판을 받아옴
     {
-        initRoadReference = initRoad;
-        lastSpawnedRoad = initRoad;
+        initRoadReference = initRoad; // 매개변수를 재시작 후 첫 발판으로 저장 
+        lastSpawnedRoad = initRoad; // 매개변수를 마지막에 소환했던 발판으로 저장
     }
 
-    public void ResetRoadState()
+    public void ResetRoadState() // 재시작 후 발판 생성 상태
     {
         isRoadSpawn = false;
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        // 충돌 태그가 플레이어고 로드스폰이 false일 때
         if (other.gameObject.CompareTag("Player") && !isRoadSpawn)
         {
             if (lastSpawnedRoad != null && lastSpawnedRoad != this.gameObject)
@@ -78,7 +75,7 @@ public class RoadObject : MonoBehaviour
         float directionY = Random.Range(0, 2) == 0 ? 1f : -1f; // 위 아래
         float directionZ = Random.Range(0, 2) == 0 ? 1f : -1f;
 
-        // 현재 발판의 중심에서부터 spawnXZRange 따라 랜덤 위치 선정
+        // 발판 중심으로 부터 랜덤 거리와 방향을 곱한 값으로 좌표 지정
         float randomX = bounds.center.x + (randomDistanceX * directionX);
         float randomY = bounds.center.y + (randomDistanceY * directionY);
         float randomZ = bounds.center.z + (randomDistanceZ * directionZ);
@@ -96,10 +93,11 @@ public class RoadObject : MonoBehaviour
         GameObject newRoad = Instantiate(RoadPrefab, spawnPosition, Quaternion.identity);
         newRoad.tag = "Road"; // // 생성된 새로운 발판에도 "Road" 태그를 부여
 
-        // 생성된 발판에 RoadObject 스크립트를 추가하고 RoadPrefab을 할당
+        // 생성된 발판에 RoadObject 스크립트를 추가하고 newRoadScript라는 이름으로 사용할 준비함
         RoadObject newRoadScript = newRoad.AddComponent<RoadObject>();
+        // 새로 생성된 RoadObject 스크립트에게, 나중에 필요할 때 사용할 '길 프리팹 원본'이 무엇인지 알려줌
         newRoadScript.RoadPrefab = RoadPrefab;
-        newRoadScript.ResetRoadState();
+        newRoadScript.ResetRoadState(); // 새로 만들어진 길(발판)의 상태를 초기화
 
         Debug.Log($"새로운 발판이 {spawnPosition}에 생성");
     }

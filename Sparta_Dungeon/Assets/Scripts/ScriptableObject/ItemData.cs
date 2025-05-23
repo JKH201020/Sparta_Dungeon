@@ -36,12 +36,9 @@ public class ItemData : ScriptableObject
     public GameObject dropPrefab;
 
     [Header("Stacking")]
-    public bool canStack;
-    public int maxStackAmount;
+    public bool canStack; // 중복으로 가질 수 있는가
+    public int maxStackAmount; // 최대 소지 수
 
     [Header("Consumable")]
-    public ItemDataConsumable[] consumables;
-
-    [Header("Item")]
-    public GameObject equipPrefab;
+    public ItemDataConsumable[] consumables; // 소지중인 아이템 배열
 }

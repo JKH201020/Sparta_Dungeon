@@ -17,8 +17,8 @@ public class Interaction : MonoBehaviour
     // 전에 사용했던 결과를 캐시에 저장해 다음에 사용할 때 바로 캐시 값을 가져와 사용하여 속도가 빠름
 
     // 캐싱하는 자료가 이 두 변수에 담겨져 있음
-    public GameObject curInteractGameObject;
-    private IInteractable curInteractable;
+    public GameObject curInteractGameObject; // 플레이어가 현재 바라보고 있는 게임 오브젝트 자체를 저장
+    private IInteractable curInteractable; // curInteractGameObject에 붙어있는 IInteractable 인터페이스 컴포넌트를 저장
 
     public TextMeshProUGUI promptText;
     private Camera camera;

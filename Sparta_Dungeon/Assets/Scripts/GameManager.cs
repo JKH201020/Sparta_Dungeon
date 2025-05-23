@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject initRoad; // 미리 배치된 발판
-    public GameObject roadPrefab;
+    public GameObject initRoad; // 시작 발판
+    public GameObject roadPrefab; // 발판 프리팹
     public GameObject playerObject;
 
     public Vector3 playerInitPosition = new Vector3(20, 1f, -20); // 플레이어 위치 초기화
@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
 
         RoadObject.ResetStatic();
 
-        initRoad.SetActive(true);
-        initRoad.tag = "Road";
+        initRoad.SetActive(true); // 첫 발판 활성화 (밟고 난 이후에는 비활성화)
+        initRoad.tag = "Road"; // 첫 발판에 태그 달아줌
 
         // 초기 발판 다시 생성
         RoadObject initRoadScript = initRoad.GetComponent<RoadObject>();
@@ -41,9 +41,10 @@ public class GameManager : MonoBehaviour
             initRoadScript = initRoad.AddComponent<RoadObject>();
         }
 
-        initRoadScript.RoadPrefab = roadPrefab;
+        initRoadScript.RoadPrefab = roadPrefab; // 다음 발판을 생성할 때 사용할 원본 프리팹
         initRoadScript.ResetRoadState();
 
+        // 모든 RoadObject 인스턴스에 공통으로 영향을 미치는 정적(static) 변수들을 초기화
         RoadObject.SetInitRoadReference(initRoad);
     }
 

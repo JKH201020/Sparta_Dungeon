@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < rays.Length; i++)
         {
-            // 땅과의 거리가 0.1f이하일 경우
+            // 땅과의 거리가 0.1f 이하일 경우
             if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
             {
                 return true;
@@ -158,11 +158,5 @@ public class PlayerController : MonoBehaviour
         }
 
         return false;
-    }
-
-    public void ToggleCursor(bool toggle)
-    {
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
     }
 }
