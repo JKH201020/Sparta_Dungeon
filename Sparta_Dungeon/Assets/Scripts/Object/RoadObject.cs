@@ -10,23 +10,55 @@ public class RoadObject : MonoBehaviour
 {
     public GameObject RoadPrefab; // 소환할 오브젝트 할당
 
-    [Header("Spawn Range")] // 소환 범위
-    //public float spawnYRange; // 전 발판보다 얼마나 위에 있는지
+    private bool isRoadSpawn = false; // 발판 생성 - 무한 생성 방지
 
-    private bool roadSpawn = false; // 발판 생성 - 무한 생성 방지
-
+    //static 키워드는 해당 변수가 클래스 자체에 속하며,
+    //그 클래스의 모든 인스턴스(객체)가 공유하는 하나의 값이라는 것을 의미
+    //RoadObject 스크립트가 여러 발판에 붙어 있을 때,
+    //static 변수를 사용하지 않았다면 각 발판은 자신만의 lastSpawnedRoad 변수를 가짐
     private static GameObject lastSpawnedRoad;
+    private static GameObject initRoadReference;
+
+    GameManager gameManager;
+    // 이 static 변수를 초기화하는 static 메서드를 추가
+    public static void ResetStatic()
+    {
+        lastSpawnedRoad = null;
+        initRoadReference = null;
+    }
+
+    public static void SetInitRoadReference(GameObject initRoad)
+    {
+        initRoadReference = initRoad;
+        lastSpawnedRoad = initRoad;
+    }
+
+    public void ResetRoadState()
+    {
+        isRoadSpawn = false;
+    }
 
     private void OnCollisionEnter(Collision other)
     {
         // 충돌 태그가 플레이어고 로드스폰이 false일 때
-        if (other.gameObject.CompareTag("Player") && !roadSpawn)
+        if (other.gameObject.CompareTag("Player") && !isRoadSpawn)
         {
-            SpawnRandomRoad(); // 발판 소환
-            roadSpawn = true; // 발판 소환 했다는 의미
+            if (lastSpawnedRoad != null && lastSpawnedRoad != this.gameObject)
+            {
+                if(lastSpawnedRoad == initRoadReference)
+                {
+                    lastSpawnedRoad.SetActive(false); // 이전 발판 비활성화
+                }
+                else
+                {
+                    Destroy(lastSpawnedRoad); // 이전 발판 제거
+                } 
+            }
 
-            Destroy(lastSpawnedRoad); // 이전 발판 제거
             lastSpawnedRoad = this.gameObject; // 현재 발판을 이전 발판으로 지정
+
+            SpawnRandomRoad(); // 발판 소환
+            isRoadSpawn = true; // 발판 소환 했다는 의미  
         }
     }
 
@@ -34,7 +66,6 @@ public class RoadObject : MonoBehaviour
     {
         // 현재 생성된 발판의 콜라이더 정보를 가져옴
         Collider curRoadCollider = GetComponent<Collider>();
-
         Bounds bounds = curRoadCollider.bounds; // 현재 발판의 월드 경계(Bounds)를 가져옴
 
         // 발판 간의 거리
@@ -52,15 +83,23 @@ public class RoadObject : MonoBehaviour
         float randomY = bounds.center.y + (randomDistanceY * directionY);
         float randomZ = bounds.center.z + (randomDistanceZ * directionZ);
 
-        if(randomY < 0.5f)
+        if (randomY < 0.5f)
         {
             randomY = 0.5f;
         }
 
         // 최종 스폰 위치
         Vector3 spawnPosition = new Vector3(randomX, randomY, randomZ);
-        // 새로운 발판을 생성
+
+        // 새로운 발판을 생성 / Instantiate: 오브젝트 복사하는 함수
+        // 새로운 위치에 회전값이 (0, 0, 0)인 RoadPrefab를 복사한다는 의미
         GameObject newRoad = Instantiate(RoadPrefab, spawnPosition, Quaternion.identity);
+        newRoad.tag = "Road"; // // 생성된 새로운 발판에도 "Road" 태그를 부여
+
+        // 생성된 발판에 RoadObject 스크립트를 추가하고 RoadPrefab을 할당
+        RoadObject newRoadScript = newRoad.AddComponent<RoadObject>();
+        newRoadScript.RoadPrefab = RoadPrefab;
+        newRoadScript.ResetRoadState();
 
         Debug.Log($"새로운 발판이 {spawnPosition}에 생성");
     }
