@@ -23,26 +23,11 @@ public class ItemSlot : MonoBehaviour
         outline = GetComponent<Outline>();
     }
 
-    private void OnEnable()
-    {
-        // 모든 아웃라인 비활성화
-        if (outline != null)
-        {
-            outline.enabled = false;
-        }
-    }
-
     public void Set()
     {
         icon.gameObject.SetActive(true);
         icon.sprite = item.icon;
         quantityText.text = quantity > 0 ? quantity.ToString() : string.Empty; // 개수 표시
-
-        // 아이템이 설정될 때 아웃라인은 항상 비활성화 상태로 시작
-        if (outline != null)
-        {
-            outline.enabled = false;
-        }
     }
 
     public void Clear()

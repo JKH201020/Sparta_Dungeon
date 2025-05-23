@@ -1421,7 +1421,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 820666566}
   condition: {fileID: 0}
-  equip: {fileID: 0}
   itemData: {fileID: 0}
   dropPosition: {fileID: 793992156}
 --- !u!54 &820666568
@@ -1487,7 +1486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiCondition: {fileID: 0}
-  Timer: 60
+  Timer: 30
   jumpPower: 5
   currentJP: 0
   onRoad: 0
